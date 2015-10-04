@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/default_padding"
+    android:paddingRight="@dimen/default_padding">
+
+    <RelativeLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/device_header_height"
+        android:padding="@dimen/default_padding">
+
+        <Button
+            android:id="@+id/buttonDeviceName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:gravity="center"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/button_device_background" />
+
+        <ProgressBar
+            android:id="@+id/progressBarConnecting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:gravity="center"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/button_device_background"
+            android:src="@mipmap/link_button"/>
+
+        <ImageButton
+            android:id="@+id/buttonReconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/button_device_background"
+            android:src="@mipmap/unlink_button"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/playerFragmentContainer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,10 @@
+Priority:
+    * Attempt to auto-reconnect when a connection is lost
+
+Ideas:
+    * Allow recording the song that is being played
+        * Have a menu item with a "recording" icon that when pressed will start saving the song
+          then when pressed again it will stop recording and save the song
+    * Allow recording / uploading new instruments
+        * Allow editing these instruments - but not allowed to edit pre-installed instruments
+        * When selecting an instrument, have 2 columns to show user defined instruments and default instruments

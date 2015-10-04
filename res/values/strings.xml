@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">BeatBoxers</string>
+
+    <string name="placeholder">PLACEHOLDER</string>
+
+    <string name="press_button_to_connect">To connect to a BeatBoxer device, press this button.</string>
+    <string name="bluetooth_currently_disabled">Bluetooth is currently disabled. You must enable Bluetooth to use BeatBoxers.</string>
+    <string name="enable_bluetooth">Enable Bluetooth</string>
+
+    <string name="about_us_text">BeatBoxers is awesome. You should use BeatBoxers for everything you do, ever.</string>
+    <string name="got_it">Got it!</string>
+    <string name="about_beatboxers">About BeatBoxers</string>
+
+    <string name="select_instrument">Select an instrument</string>
+
+    <string name="device_settings">Device settings</string>
+    <string name="device_settings_text">You can remove this device from the current session or save / forget the device to change if the device is automatically connected when BeatBoxers is started.</string>
+
+    <string name="scan_for_devices">Scan for devices</string>
+    <string name="no_devices_found">No devices found&#8230;</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="remove">Remove</string>
+    <string name="scan">Scan</string>
+    <string name="forget">Forget</string>
+    <string name="save">Save</string>
+
+    <string name="about_us">About Us</string>
+    <string name="tutorial">Tutorial</string>
+
+    <string name="instrument_disabled">Disabled</string>
+    <string name="instrument_loopback">Loopback</string>
+    <string name="instrument_bass">Bass</string>
+    <string name="instrument_crash">Crash</string>
+    <string name="instrument_floor_tom">Floor Tom</string>
+    <string name="instrument_high_hat">High Hat</string>
+    <string name="instrument_ride">Ride</string>
+    <string name="instrument_snare">Snare</string>
+    <string name="instrument_tom_1">Tom 1</string>
+    <string name="instrument_tom_2">Tom 2</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="action_bar_background" type="color">#323232</item>
+
+    <item name="connecting" type="color">#ffcc00</item>
+    <item name="connected" type="color">#00823b</item>
+    <item name="disconnected" type="color">#323232</item>
+    <item name="scan" type="color">#004682</item>
+
+    <item name="text" type="color">#FFFFFF</item>
+    <item name="highlighted_text" type="color">#ffcc00</item>
+
+    <item name="cell_pressed" type="color">#888888</item>
+    <item name="cell_activated" type="color">#636363</item>
+</resources>
