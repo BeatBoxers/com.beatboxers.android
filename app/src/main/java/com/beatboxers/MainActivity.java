@@ -15,6 +15,8 @@ import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +30,7 @@ import com.beatboxers.bluetooth.ConnectionCallback;
 import com.beatboxers.bluetooth.ConnectionService;
 import com.beatboxers.bluetooth.device.Rfduino;
 import com.beatboxers.bluetooth.device.SavedDevices;
+import com.beatboxers.actions.Phone;
 import com.beatboxers.dialogs.AboutUsDialog;
 import com.beatboxers.dialogs.ScanDialog;
 import com.beatboxers.fragments.FragmentDevice;
@@ -44,7 +47,13 @@ import java.util.HashMap;
 public class MainActivity extends Activity {
     static private final String LOG_TAG = "bb_"+MainActivity.class.getSimpleName();
 
+    static public final int ACTION_STATE_PLAY = 1;
+    static public final int ACTION_STATE_PHONE_CALL = 2;
+
+    static public int CURRENT_ACTION = ACTION_STATE_PLAY;
+
     private ConnectionService mConnectionService;
+    private TelephonyManager mTelephonyManager;
     private AudioPlayer mAudioPlayer;
     private DeviceConfig mDeviceConfig;
     private ScanDialog mScanDialog = new ScanDialog();
@@ -102,6 +111,18 @@ public class MainActivity extends Activity {
                     mConnectionService.disconnect(address);
                     mLayoutManager.remove(name, address);
                     break;
+            }
+        }
+    };
+
+    private final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
+        public void onCallStateChanged(int state, String incomingNumber) {
+            if (state == TelephonyManager.CALL_STATE_RINGING && !incomingNumber.equals("")) {
+                Log.i(LOG_TAG, "Phone call coming in");
+                CURRENT_ACTION = ACTION_STATE_PHONE_CALL;
+            } else {
+                Log.i(LOG_TAG, "Passing action back to player");
+                CURRENT_ACTION = ACTION_STATE_PLAY;
             }
         }
     };
@@ -199,6 +220,9 @@ public class MainActivity extends Activity {
         Intent gattServiceIntent = new Intent(this, ConnectionService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
+        //be ready for telephony
+        mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+
         //force our action bar to use the overflow menu instead of hardware button
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
@@ -220,6 +244,8 @@ public class MainActivity extends Activity {
         Log.i(LOG_TAG, "onStart");
 
         registerReceiver(mBluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+
+        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     @Override
@@ -259,6 +285,8 @@ public class MainActivity extends Activity {
 
         //we don't care about Bluetooth state changes when we are stopped
         unregisterReceiver(mBluetoothBroadcastReceiver);
+
+        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
     }
 
     @Override
@@ -538,6 +566,8 @@ public class MainActivity extends Activity {
         }
 
         private FragmentDeviceHeader addNewDeviceHeaderFragment(String tag, String title, boolean isScan) {
+            Log.i(LOG_TAG, "Adding new device header fragment: " + tag);
+
             FragmentDeviceHeader fragment = new FragmentDeviceHeader();
             fragment.setButtonOnClickListener(mmHeaderButtonClickListener);
 

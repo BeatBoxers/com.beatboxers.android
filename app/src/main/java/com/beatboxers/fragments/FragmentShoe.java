@@ -14,7 +14,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.beatboxers.Broadcasts;
+import com.beatboxers.MainActivity;
 import com.beatboxers.R;
+import com.beatboxers.actions.Phone;
 import com.beatboxers.instruments.Instruments;
 
 public class FragmentShoe extends FragmentDevice {
@@ -26,6 +28,12 @@ public class FragmentShoe extends FragmentDevice {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Broadcasts.ACTION_HIT_RECEIVED)) {
+                // if we are in the phone call state, react differently
+                if (MainActivity.CURRENT_ACTION == MainActivity.ACTION_STATE_PHONE_CALL) {
+                    Phone.disconnect();
+                    return;
+                }
+
                 //do not do anything with loopback pads here
                 if (getInstrument(1).instrumentid == Instruments.LOOPBACK) {
                     return;

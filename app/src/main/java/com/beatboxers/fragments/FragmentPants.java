@@ -14,7 +14,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.beatboxers.Broadcasts;
+import com.beatboxers.MainActivity;
 import com.beatboxers.R;
+import com.beatboxers.actions.Phone;
 import com.beatboxers.instruments.Instruments;
 
 public class FragmentPants extends FragmentDevice {
@@ -33,6 +35,18 @@ public class FragmentPants extends FragmentDevice {
                     //int force = intent.getIntExtra(Broadcasts.EXTRA_HIT_FORCE, -1);
 
                     if (padNumber < 1 || padNumber > mPadCount) {
+                        return;
+                    }
+
+                    // if we are in the phone call state, react differently
+                    if (MainActivity.CURRENT_ACTION == MainActivity.ACTION_STATE_PHONE_CALL) {
+                        // left pant leg
+                        if (1 == padNumber || 2 == padNumber || 5 == padNumber || 6 == padNumber) {
+                            Phone.disconnect();
+                        } else {
+                            Phone.answer(getActivity());
+                        }
+
                         return;
                     }
 
