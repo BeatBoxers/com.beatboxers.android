@@ -40,6 +40,7 @@
     <string name="instrument_snare">Snare</string>
     <string name="instrument_tom_1">Tom 1</string>
     <string name="instrument_tom_2">Tom 2</string>
+    <string name="fart">Fart Sound</string>
     <string name="disableDoubleHit">Disable Double Hit</string>
     <string name="disableDoubleHitSummary">Disable sample re-play on double hit</string>
 </resources>
