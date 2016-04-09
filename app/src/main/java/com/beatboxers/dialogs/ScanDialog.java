@@ -66,7 +66,7 @@ public class ScanDialog extends DialogFragment {
             }
 
             public void onDiscover(final BluetoothDevice device) {
-                if (!mDiscoveredDevices.contains(device)) {
+                if (!mDiscoveredDevices.contains(device) && null != device.getName()) {
                     mDiscoveredDevices.add(device);
                     mListViewAdapter.notifyDataSetChanged();
 

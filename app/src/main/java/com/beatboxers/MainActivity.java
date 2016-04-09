@@ -516,7 +516,7 @@ public class MainActivity extends Activity {
             tag = HEADER_FRAGMENT_TAG_PREFIX+tag;
 
             for (FragmentDeviceHeader fragmentDeviceHeader : mmDeviceHeaderFragments) {
-                if (fragmentDeviceHeader.getTag().equals(tag)) {
+                if (tag.equals(fragmentDeviceHeader.getTag())) {
                     return true;
                 }
             }
