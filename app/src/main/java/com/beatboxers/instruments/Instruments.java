@@ -16,6 +16,7 @@ public class Instruments {
     static public final int SNARE = 6;
     static public final int TOM_1 = 7;
     static public final int TOM_2 = 8;
+    static public final int FART = 9;
 
     private ArrayList<Instrument> mInstruments = new ArrayList<>();
 
@@ -32,6 +33,7 @@ public class Instruments {
         mInstruments.add(new Instrument(SNARE, R.string.instrument_snare, R.mipmap.snare));
         mInstruments.add(new Instrument(TOM_1, R.string.instrument_tom_1, R.mipmap.tom_1));
         mInstruments.add(new Instrument(TOM_2, R.string.instrument_tom_2, R.mipmap.tom_2));
+        mInstruments.add(new Instrument(FART, R.string.fart, R.mipmap.tom_2));
     }
 
     static public Instruments sharedInstance() {

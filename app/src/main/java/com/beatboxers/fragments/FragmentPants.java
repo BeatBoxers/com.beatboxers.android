@@ -20,7 +20,7 @@ import com.beatboxers.actions.Phone;
 import com.beatboxers.instruments.Instruments;
 
 public class FragmentPants extends FragmentDevice {
-    static private final String LOG_TAG = "bb_"+FragmentPants.class.getSimpleName();
+    static private final String LOG_TAG = "bb_" + FragmentPants.class.getSimpleName();
 
     static public final int PAD_COUNT = 8;
 
@@ -32,7 +32,6 @@ public class FragmentPants extends FragmentDevice {
 
                 if (address.equals(mDeviceAddress)) {
                     int padNumber = intent.getIntExtra(Broadcasts.EXTRA_PAD_NUMBER, -1);
-                    //int force = intent.getIntExtra(Broadcasts.EXTRA_HIT_FORCE, -1);
 
                     if (padNumber < 1 || padNumber > mPadCount) {
                         return;
@@ -56,7 +55,7 @@ public class FragmentPants extends FragmentDevice {
                     }
 
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
-                    final ImageView imageView = (ImageView)mPlayerLayout.findViewById(getPadViewIdentifier(padNumber));
+                    final ImageView imageView = (ImageView) mPlayerLayout.findViewById(getPadViewIdentifier(padNumber));
 
                     shake.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -70,7 +69,8 @@ public class FragmentPants extends FragmentDevice {
                         }
 
                         @Override
-                        public void onAnimationRepeat(Animation animation) { }
+                        public void onAnimationRepeat(Animation animation) {
+                        }
                     });
 
                     imageView.startAnimation(shake);

@@ -27,6 +27,7 @@
     <string name="save">Save</string>
 
     <string name="about_us">About Us</string>
+    <string name="settings">Settings</string>
     <string name="tutorial">Tutorial</string>
 
     <string name="instrument_disabled">Disabled</string>
@@ -39,4 +40,7 @@
     <string name="instrument_snare">Snare</string>
     <string name="instrument_tom_1">Tom 1</string>
     <string name="instrument_tom_2">Tom 2</string>
+    <string name="fart">Fart Sound</string>
+    <string name="disableDoubleHit">Disable Double Hit</string>
+    <string name="disableDoubleHitSummary">Disable sample re-play on double hit</string>
 </resources>

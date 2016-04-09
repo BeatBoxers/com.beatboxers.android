@@ -6,7 +6,8 @@
         android:showAsAction="never" />
 
     <item
-        android:id="@+id/menuTutorial"
-        android:title="@string/tutorial"
+        android:id="@+id/menuSettings"
+        android:title="@string/settings"
         android:showAsAction="never" />
+
 </menu>

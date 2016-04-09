@@ -25,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.SettingsActivity"/>
 
         <service android:name=".bluetooth.ConnectionService" android:enabled="true" />
     </application>
