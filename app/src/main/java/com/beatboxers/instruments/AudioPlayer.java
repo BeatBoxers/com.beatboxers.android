@@ -35,6 +35,7 @@ public class AudioPlayer {
     private int mSnare;
     private int mTom1;
     private int mTom2;
+    private int fart;
 
     static public AudioPlayer sharedInstance() throws UnsetVariableException {
         if (null == mSharedInstance) {
@@ -58,6 +59,7 @@ public class AudioPlayer {
         mSnare = mSoundPool.load(context, R.raw.snare, 1);
         mTom1 = mSoundPool.load(context, R.raw.tom_1, 1);
         mTom2 = mSoundPool.load(context, R.raw.tom_2, 1);
+        fart = mSoundPool.load(context, R.raw.fart_1, 1);
 
         //play nothing to fix a bug in soundpool
         mSoundPool.play(-914, 0, 0, 1, -1, 1f);
@@ -96,6 +98,9 @@ public class AudioPlayer {
                 break;
             case Instruments.TOM_2:
                 mSoundPool.play(mTom2, volume, volume, 1, 0, 1f);
+                break;
+            case Instruments.FART:
+                mSoundPool.play(fart, volume, volume, 1, 0, 1f);
                 break;
             case Instruments.LOOPBACK:
                 //if we are not recording but we are playing, kill the player thread and reset all variables
