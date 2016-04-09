@@ -21,14 +21,14 @@ public class SavedDevices {
         SharedPreferences savedDevices = mContext.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = savedDevices.edit();
         editor.putString(address, name);
-        editor.commit();
+        editor.apply();
     }
 
     public void remove(String address) {
         SharedPreferences savedDevices = mContext.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = savedDevices.edit();
         editor.remove(address);
-        editor.commit();
+        editor.apply();
     }
 
     public boolean isSaved(String address) {

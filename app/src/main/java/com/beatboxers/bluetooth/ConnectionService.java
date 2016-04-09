@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ConnectionService extends Service {
-    private final static String LOG_TAG = "bb_"+ConnectionService.class.getSimpleName();
+    private final static String LOG_TAG = "bb_" + ConnectionService.class.getSimpleName();
 
     private final IBinder mBinder = new LocalBinder();
     protected final Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
@@ -39,7 +39,7 @@ public class ConnectionService extends Service {
         @Override
         public void onConnectionStateChange(final BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                Log.i(LOG_TAG, "Connected to GATT server. "+gatt.getDevice().getName());
+                Log.i(LOG_TAG, "Connected to GATT server. " + gatt.getDevice().getName());
 
                 if (!mConnectedDevices.contains(gatt)) {
                     mConnectedDevices.add(gatt);
@@ -47,9 +47,8 @@ public class ConnectionService extends Service {
 
                 //start discovering services right away
                 gatt.discoverServices();
-            }
-            else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Log.i(LOG_TAG, "Disconnected from GATT server. "+gatt.getDevice().getName());
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                Log.i(LOG_TAG, "Disconnected from GATT server. " + gatt.getDevice().getName());
 
                 if (mConnectedDevices.contains(gatt)) {
                     mConnectedDevices.remove(gatt);
@@ -90,8 +89,7 @@ public class ConnectionService extends Service {
                             }
                         }
                     });
-                }
-                catch (NullPointerException e) {
+                } catch (NullPointerException e) {
                     Log.e(LOG_TAG, "Could not find the TX/RX GATT characteristic. " + deviceName);
 
                     mMainThreadHandler.post(new Runnable() {
@@ -103,8 +101,7 @@ public class ConnectionService extends Service {
                         }
                     });
                 }
-            }
-            else {
+            } else {
                 Log.w(LOG_TAG, "onServicesDiscovered received: " + status + " " + deviceName);
 
                 mMainThreadHandler.post(new Runnable() {
@@ -149,8 +146,7 @@ public class ConnectionService extends Service {
 
                     if (deviceName.equals(Microduino.DEVICE_NAME)) {
                         Microduino.hitReceived(ConnectionService.this, address, received);
-                    }
-                    else if (deviceName.equals(Rfduino.DEVICE_NAME)) {
+                    } else if (deviceName.equals(Rfduino.DEVICE_NAME)) {
                         Rfduino.hitReceived(ConnectionService.this, address, received);
                     }
                 }
@@ -160,7 +156,7 @@ public class ConnectionService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        BluetoothManager bluetoothManager = (BluetoothManager)getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothManager bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
         return mBinder;
@@ -180,13 +176,13 @@ public class ConnectionService extends Service {
     }
 
     public void connect(String address) {
-        Log.i(LOG_TAG, "Attempting to connect to device: "+address);
+        Log.i(LOG_TAG, "Attempting to connect to device: " + address);
 
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         device.connectGatt(getApplicationContext(), false, mBluetoothGattCallback);
     }
 
-    public void disconnect() {
+    public synchronized void disconnect() {
         Iterator<BluetoothGatt> iterator = mConnectedDevices.iterator();
 
         while (iterator.hasNext()) {
@@ -199,7 +195,7 @@ public class ConnectionService extends Service {
         mConnectedDevices.clear();
     }
 
-    public void disconnect(String address) {
+    public synchronized void disconnect(String address) {
         Iterator<BluetoothGatt> iterator = mConnectedDevices.iterator();
 
         while (iterator.hasNext()) {
