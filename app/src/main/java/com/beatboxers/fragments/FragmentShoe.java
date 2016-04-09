@@ -27,7 +27,7 @@ public class FragmentShoe extends FragmentDevice {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Broadcasts.ACTION_HIT_RECEIVED)) {
                 //do not do anything with loopback pads here
-                if (getInstrument(1).instrumentid == Instruments.LOOPBACK) {
+                if (getInstrument(1).isLoopback()) {
                     return;
                 }
 

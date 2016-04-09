@@ -44,7 +44,7 @@ public class DeviceConfig {
         SharedPreferences settings = mContext.getSharedPreferences(address, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(String.valueOf(padNumber), instrumentid);
-        editor.commit();
+        editor.apply();
 
         loadDevice(address);
     }
@@ -52,29 +52,8 @@ public class DeviceConfig {
     public int getInstrumentid(String address, int padNumber) {
         try {
             return mDeviceConfigs.get(address).get(padNumber);
-        }
-        catch (NullPointerException e) {
-            //return a default instrument for this pad number
-            switch (padNumber) {
-                case 1:
-                    return Instruments.BASS;
-                case 2:
-                    return Instruments.FLOOR_TOM;
-                case 3:
-                    return Instruments.SNARE;
-                case 4:
-                    return Instruments.TOM_1;
-                case 5:
-                    return Instruments.CRASH;
-                case 6:
-                    return Instruments.HIGH_HAT;
-                case 7:
-                    return Instruments.RIDE;
-                case 8:
-                    return Instruments.TOM_2;
-                default:
-                    return Instruments.DISABLED;
-            }
+        } catch (NullPointerException e) {
+            return Instruments.sharedInstance().getInstrument(padNumber).instrumentid;
         }
     }
 }

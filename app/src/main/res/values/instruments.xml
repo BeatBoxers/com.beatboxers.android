@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="instrument0">
+        <item name="name">@string/instrument_disabled</item>
+        <item name="icon">@mipmap/disabled</item>
+        <item name="number">-1</item>
+        <item name="sample">-1</item>
+    </array>
+    <array name="instrument1">
+        <item name="name">@string/instrument_loopback</item>
+        <item name="icon">@mipmap/loop</item>
+        <item name="number">0</item>
+        <item name="sample">-1</item>
+    </array>
+    <array name="instrument2">
+        <item name="name">@string/instrument_bass</item>
+        <item name="icon">@mipmap/bass</item>
+        <item name="number">1</item>
+        <item name="sample">@raw/bass</item>
+    </array>
+    <array name="instrument3">
+        <item name="name">@string/instrument_crash</item>
+        <item name="icon">@mipmap/crash</item>
+        <item name="number">2</item>
+        <item name="sample">@raw/crash</item>
+    </array>
+    <array name="instrument4">
+        <item name="name">@string/instrument_floor_tom</item>
+        <item name="icon">@mipmap/floor_tom</item>
+        <item name="number">3</item>
+        <item name="sample">@raw/floor_tom</item>
+    </array>
+    <array name="instrument5">
+        <item name="name">@string/instrument_high_hat</item>
+        <item name="icon">@mipmap/high_hat</item>
+        <item name="number">4</item>
+        <item name="sample">@raw/high_hat</item>
+    </array>
+    <array name="instrument6">
+        <item name="name">@string/instrument_ride</item>
+        <item name="icon">@mipmap/ride</item>
+        <item name="number">5</item>
+        <item name="sample">@raw/ride</item>
+    </array>
+    <array name="instrument7">
+        <item name="name">@string/instrument_snare</item>
+        <item name="icon">@mipmap/snare</item>
+        <item name="number">6</item>
+        <item name="sample">@raw/snare</item>
+    </array>
+    <array name="instrument8">
+        <item name="name">@string/instrument_tom_1</item>
+        <item name="icon">@mipmap/tom_1</item>
+        <item name="number">7</item>
+        <item name="sample">@raw/tom_1</item>
+    </array>
+    <array name="instrument9">
+        <item name="name">@string/instrument_tom_2</item>
+        <item name="icon">@mipmap/tom_2</item>
+        <item name="number">8</item>
+        <item name="sample">@raw/tom_2</item>
+    </array>
+    <array name="instrument10">
+        <item name="name">@string/fart</item>
+        <item name="icon">@mipmap/tom_2</item>
+        <item name="number">9</item>
+        <item name="sample">@raw/fart_1</item>
+    </array>
+    <array name="instrumentsItems">
+        <item>@array/instrument0</item>
+        <item>@array/instrument1</item>
+        <item>@array/instrument2</item>
+        <item>@array/instrument3</item>
+        <item>@array/instrument4</item>
+        <item>@array/instrument5</item>
+        <item>@array/instrument6</item>
+        <item>@array/instrument7</item>
+        <item>@array/instrument8</item>
+        <item>@array/instrument9</item>
+        <item>@array/instrument10</item>
+    </array>
+</resources>

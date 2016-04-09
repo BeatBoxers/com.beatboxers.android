@@ -21,6 +21,7 @@ import com.beatboxers.instruments.Instruments;
 import com.beatboxers.instruments.UnsetVariableException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseInstrumentDialog extends DialogFragment {
     static private final String LOG_TAG = "bb_"+ChooseInstrumentDialog.class.getSimpleName();
@@ -37,10 +38,10 @@ public class ChooseInstrumentDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        final ArrayList<Instrument> instruments = Instruments.sharedInstance().getInstruments();
+        final List<Instrument> instruments = Instruments.sharedInstance().getInstruments();
         final String deviceAddress = getArguments().getString(EXTRAS_ADDRESS);
         final int padNumber = getArguments().getInt(EXTRAS_PAD_NUMBER, 0);
-        int selectedInstrumentid = getArguments().getInt(EXTRAS_SELECTED_INSTRUMENT_ID, Instruments.DISABLED);
+        int selectedInstrumentid = getArguments().getInt(EXTRAS_SELECTED_INSTRUMENT_ID, Instruments.sharedInstance().getDisabledId());
 
         //setup our views first
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_choose_instrument, null);

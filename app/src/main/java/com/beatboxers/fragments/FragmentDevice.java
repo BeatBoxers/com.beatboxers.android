@@ -241,7 +241,7 @@ public class FragmentDevice extends AbstractDeviceFragment {
         catch (UnsetVariableException e) {
             Log.e(LOG_TAG, "Instruemnts shared instance was not set");
 
-            return Instruments.sharedInstance().getInstrument(Instruments.DISABLED);
+            return Instruments.sharedInstance().getDisabled();
         }
     }
 
@@ -249,7 +249,7 @@ public class FragmentDevice extends AbstractDeviceFragment {
         ArrayList<Integer> loopbackPads = new ArrayList<>();
 
         for (int i = 1; i <= padCount; i++) {
-            if (getInstrument(i).instrumentid == Instruments.LOOPBACK) {
+            if (getInstrument(i).isLoopback()) {
                 loopbackPads.add(getPadViewIdentifier(i));
             }
         }
