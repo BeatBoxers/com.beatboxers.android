@@ -68,7 +68,7 @@
     </array>
     <array name="instrument11">
         <item name="name">@string/jfdi</item>
-        <item name="icon">@mipmap/tom_2</item>
+        <item name="icon">@mipmap/jfdi</item>
         <item name="number">10</item>
         <item name="sample">@raw/jfdi</item>
     </array>
