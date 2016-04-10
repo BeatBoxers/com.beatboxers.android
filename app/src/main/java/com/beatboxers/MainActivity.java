@@ -39,6 +39,7 @@ import com.beatboxers.fragments.FragmentDeviceHeader;
 import com.beatboxers.fragments.FragmentPants;
 import com.beatboxers.fragments.FragmentShoe;
 import com.beatboxers.fragments.SettingsFragment;
+import com.beatboxers.groups.Groups;
 import com.beatboxers.instruments.AudioPlayer;
 import com.beatboxers.instruments.DeviceConfig;
 import com.beatboxers.instruments.Instruments;
@@ -265,6 +266,7 @@ public class MainActivity extends Activity {
         Log.i(LOG_TAG, "onResume");
 
         Instruments.init(this);
+        Groups.init(this);
 
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!mBluetoothAdapter.isEnabled()) {

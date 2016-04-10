@@ -79,4 +79,50 @@
         <item>@array/instrument9</item>
         <item>@array/instrument10</item>
     </array>
+    <array name="group0">
+        <item>@string/group0</item>
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </array>
+    <array name="group1">
+        <item>@string/group1</item>
+        <item>1</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+    </array>
+    <array name="group2">
+        <item>@string/group2</item>
+        <item>9</item>
+    </array>
+    <array name="group3">
+        <item>@string/group3</item>
+        <item>2</item>
+        <item>5</item>
+    </array>
+    <array name="instrumentsGroups">
+        <item>@array/group0</item>
+        <item>@array/group1</item>
+        <item>@array/group2</item>
+        <item>@array/group3</item>
+    </array>
+    <string name="group0">All</string>
+    <string name="group1">Drums</string>
+    <string name="group2">Farts</string>
+    <string name="group3">Percussion</string>
+    <string-array name="groupsNames">
+        <item>@string/group0</item>
+        <item>@string/group1</item>
+        <item>@string/group2</item>
+        <item>@string/group3</item>
+    </string-array>
 </resources>

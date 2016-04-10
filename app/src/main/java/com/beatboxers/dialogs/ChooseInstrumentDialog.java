@@ -3,7 +3,6 @@ package com.beatboxers.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,10 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.beatboxers.Broadcasts;
 import com.beatboxers.R;
+import com.beatboxers.adapter.GroupsListAdapter;
 import com.beatboxers.adapter.InstrumentsListAdapter;
+import com.beatboxers.groups.Group;
+import com.beatboxers.groups.Groups;
 import com.beatboxers.instruments.DeviceConfig;
 import com.beatboxers.instruments.Instrument;
 import com.beatboxers.instruments.Instruments;
@@ -24,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseInstrumentDialog extends DialogFragment {
-    static private final String LOG_TAG = "bb_"+ChooseInstrumentDialog.class.getSimpleName();
+    static private final String LOG_TAG = "bb_" + ChooseInstrumentDialog.class.getSimpleName();
 
     static public final String TAG = "chooseInstrumentDialog";
 
@@ -33,23 +36,74 @@ public class ChooseInstrumentDialog extends DialogFragment {
     static public final String EXTRAS_SELECTED_INSTRUMENT_ID = "instrumentid";
 
     private ListView mListView;
+    private List<Instrument> filteredInstruments;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        final List<Instrument> instruments = Instruments.sharedInstance().getInstruments();
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_choose_instrument, null);
+
+        filteredInstruments = new ArrayList<>();
+        filteredInstruments.addAll(Instruments.sharedInstance().getInstruments());
+
+        setupListView(view, filteredInstruments);
+        setupGroupsView(view);
+
+        AlertDialog.Builder builder = setupButtonAndTitle(view);
+        return builder.create();
+    }
+
+    private void setupGroupsView(View view) {
+        final List<Group> groups = Groups.sharedInstance().getGroups();
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.instrumentsGroup);
+        final GroupsListAdapter adapter = new GroupsListAdapter(getActivity(), android.R.layout.simple_spinner_item, groups);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filteredInstruments.clear();
+                filteredInstruments.addAll(groups.get(position).getInstruments());
+                ((InstrumentsListAdapter) mListView.getAdapter()).notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private AlertDialog.Builder setupButtonAndTitle(View view) {
+        View titleView = getActivity().getLayoutInflater().inflate(R.layout.dialog_choose_instrument_title, null);
+        //set the cancel button since we can't always rely on the user knowing to press back
+        Button cancelButton = (Button) view.findViewById(R.id.buttonCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        //set our views to the dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCustomTitle(titleView)
+                .setView(view);
+        return builder;
+    }
+
+    private void setupListView(View view, final List<Instrument> instruments) {
         final String deviceAddress = getArguments().getString(EXTRAS_ADDRESS);
         final int padNumber = getArguments().getInt(EXTRAS_PAD_NUMBER, 0);
         int selectedInstrumentid = getArguments().getInt(EXTRAS_SELECTED_INSTRUMENT_ID, Instruments.sharedInstance().getDisabledId());
 
-        //setup our views first
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_choose_instrument, null);
-        View titleView = getActivity().getLayoutInflater().inflate(R.layout.dialog_choose_instrument_title, null);
 
-        InstrumentsListAdapter adapter = new InstrumentsListAdapter(getActivity(), R.layout.cell_instrument, instruments);
-        mListView = (ListView)view.findViewById(R.id.listInstruments);
-        mListView.setAdapter(adapter);
+        InstrumentsListAdapter InstrumentsListAdapter = new InstrumentsListAdapter(getActivity(), R.layout.cell_instrument, instruments);
+
+        mListView = (ListView) view.findViewById(R.id.listInstruments);
+        mListView.setAdapter(InstrumentsListAdapter);
 
         for (int i = 0; i < instruments.size(); i++) {
             if (instruments.get(i).instrumentid == selectedInstrumentid) {
@@ -79,21 +133,5 @@ public class ChooseInstrumentDialog extends DialogFragment {
                 }
             }
         });
-
-        //set the cancel button since we can't always rely on the user knowing to press back
-        Button cancelButton = (Button)view.findViewById(R.id.buttonCancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        //set our views to the dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCustomTitle(titleView)
-                .setView(view);
-
-        return builder.create();
     }
 }
