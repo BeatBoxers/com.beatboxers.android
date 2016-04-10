@@ -12,4 +12,6 @@
 
     <item name="cell_pressed" type="color">#888888</item>
     <item name="cell_activated" type="color">#636363</item>
+
+    <item name="spacer" type="color">#00AAFF</item>
 </resources>

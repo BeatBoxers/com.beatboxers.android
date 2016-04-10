@@ -32,8 +32,8 @@ public class GroupsListAdapter extends ArrayAdapter<Group> {
 
         TextView label = (TextView) view.findViewById(R.id.groupLabel);
         label.setText(this.getItem(position).name);
-        label.setEllipsize(TextUtils.TruncateAt.END);
-        label.setSingleLine(true);
+        //label.setEllipsize(TextUtils.TruncateAt.END);
+        //label.setSingleLine(true);
         return label;
     }
 
@@ -47,8 +47,8 @@ public class GroupsListAdapter extends ArrayAdapter<Group> {
 
         TextView label = (TextView) view.findViewById(R.id.groupLabel);
         label.setText(this.getItem(position).name);
-        label.setEllipsize(TextUtils.TruncateAt.END);
-        label.setSingleLine(true);
+        //label.setEllipsize(TextUtils.TruncateAt.END);
+        //label.setSingleLine(true);
         return label;
     }
 }
