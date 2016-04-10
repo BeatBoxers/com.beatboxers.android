@@ -62,7 +62,7 @@
     </array>
     <array name="instrument10">
         <item name="name">@string/fart</item>
-        <item name="icon">@mipmap/tom_2</item>
+        <item name="icon">@mipmap/fart</item>
         <item name="number">9</item>
         <item name="sample">@raw/fart_1</item>
     </array>
