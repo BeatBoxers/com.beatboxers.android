@@ -66,6 +66,12 @@
         <item name="number">9</item>
         <item name="sample">@raw/fart_1</item>
     </array>
+    <array name="instrument11">
+        <item name="name">@string/jfdi</item>
+        <item name="icon">@mipmap/tom_2</item>
+        <item name="number">10</item>
+        <item name="sample">@raw/jfdi</item>
+    </array>
     <array name="instrumentsItems">
         <item>@array/instrument0</item>
         <item>@array/instrument1</item>
@@ -78,6 +84,7 @@
         <item>@array/instrument8</item>
         <item>@array/instrument9</item>
         <item>@array/instrument10</item>
+        <item>@array/instrument11</item>
     </array>
     <array name="group0">
         <item>@string/group0</item>
@@ -92,6 +99,7 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
     </array>
     <array name="group1">
         <item>@string/group1</item>
@@ -103,6 +111,7 @@
     <array name="group2">
         <item>@string/group2</item>
         <item>9</item>
+        <item>10</item>
     </array>
     <array name="group3">
         <item>@string/group3</item>
