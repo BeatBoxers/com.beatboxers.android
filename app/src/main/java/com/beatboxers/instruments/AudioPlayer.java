@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.beatboxers.Broadcasts;
-import com.beatboxers.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +22,10 @@ public class AudioPlayer {
 
     private Context mContext;
     private SharedPreferences mSharedPreferences;
+    private Instruments mInstruments;
+    private Map<Integer, Integer> mPadToSoundMap = new HashMap<>();
+    Map<Integer, Long> durations = new HashMap<>();
+    Map<Integer, Long> lastStartsMap = new HashMap<>();
 
     private SoundPool mSoundPool;
 
@@ -33,20 +36,6 @@ public class AudioPlayer {
     private LoopbackPlayerThread mLoopbackPlayerThread;
     private long mLastHitTime = 0;
     private boolean mIsRecording = false;
-
-    //instrument variables
-    private int mBass;
-    private int mCrash;
-    private int mFloorTom;
-    private int mHighHat;
-    private int mRide;
-    private int mSnare;
-    private int mTom1;
-    private int mTom2;
-    private int fart;
-
-    Map<Integer, Long> durations = new HashMap<>();
-    Map<Integer, Long> lastStartsMap = new HashMap<>();
 
     static public AudioPlayer sharedInstance() throws UnsetVariableException {
         if (null == mSharedInstance) {
@@ -60,7 +49,7 @@ public class AudioPlayer {
         mContext = context;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        //SoundPool(SOUND_COUNT = INSTRUMENT_COUNT * 2
+        mInstruments = Instruments.init(context);
         mSoundPool = new SoundPool(50, AudioManager.STREAM_MUSIC, 0);
 
         loadSamples(context);
@@ -74,15 +63,12 @@ public class AudioPlayer {
     private void loadSamples(Context context) {
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 
-        mBass = loadAndSaveSampleDuration(context, mmr, R.raw.bass);
-        mCrash = loadAndSaveSampleDuration(context, mmr, R.raw.crash);
-        mFloorTom = loadAndSaveSampleDuration(context, mmr, R.raw.floor_tom);
-        mHighHat = loadAndSaveSampleDuration(context, mmr, R.raw.high_hat);
-        mRide = loadAndSaveSampleDuration(context, mmr, R.raw.ride);
-        mSnare = loadAndSaveSampleDuration(context, mmr, R.raw.snare);
-        mTom1 = loadAndSaveSampleDuration(context, mmr, R.raw.tom_1);
-        mTom2 = loadAndSaveSampleDuration(context, mmr, R.raw.tom_2);
-        fart = loadAndSaveSampleDuration(context, mmr, R.raw.fart_1);
+        for (Instrument instrument : mInstruments.getInstruments()) {
+            if (instrument.sampleId != -1) {
+                int instrumentId = loadAndSaveSampleDuration(context, mmr, instrument.sampleId);
+                mPadToSoundMap.put(instrument.instrumentid, instrumentId);
+            }
+        }
 
         mmr.release();
     }
@@ -108,77 +94,52 @@ public class AudioPlayer {
             return;
         }
         float volume = 1.0f;
+        Instrument instrument = mInstruments.getInstrument(instrumentid);
+        if (instrument.isLoopback()) {
+            //if we are not recording but we are playing, kill the player thread and reset all variables
+            if (null != mLoopbackPlayerThread) {
+                Log.d(LOG_TAG, "loopback stop received");
 
-        switch (instrumentid) {
-            case Instruments.BASS:
-                mSoundPool.play(mBass, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.CRASH:
-                mSoundPool.play(mCrash, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.FLOOR_TOM:
-                mSoundPool.play(mFloorTom, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.HIGH_HAT:
-                mSoundPool.play(mHighHat, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.RIDE:
-                mSoundPool.play(mRide, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.SNARE:
-                mSoundPool.play(mSnare, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.TOM_1:
-                mSoundPool.play(mTom1, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.TOM_2:
-                mSoundPool.play(mTom2, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.FART:
-                mSoundPool.play(fart, volume, volume, 1, 0, 1f);
-                break;
-            case Instruments.LOOPBACK:
-                //if we are not recording but we are playing, kill the player thread and reset all variables
-                if (null != mLoopbackPlayerThread) {
-                    Log.d(LOG_TAG, "loopback stop received");
+                killLoopbackPlayerThread();
+                return;
+            }
 
-                    killLoopbackPlayerThread();
-                    return;
-                }
+            mIsRecording = !mIsRecording;
 
-                mIsRecording = !mIsRecording;
+            //start recording
+            if (mIsRecording) {
+                Log.d(LOG_TAG, "started recoding for loopback");
 
-                //start recording
-                if (mIsRecording) {
-                    Log.d(LOG_TAG, "started recoding for loopback");
+                sendLoopbackBroadcast(Broadcasts.ACTION_LOOPBACK_RECORDING);
 
-                    sendLoopbackBroadcast(Broadcasts.ACTION_LOOPBACK_RECORDING);
+                mLastHitTime = System.currentTimeMillis();
+            } else {
+                //stop recording and start playing back the loop
+                if (mLoopedInstruments.size() > 0) {
+                    Log.d(LOG_TAG, "start loopback thread");
 
-                    mLastHitTime = System.currentTimeMillis();
+                    //add a disabled instrument to the end to reflect the pause from the last instrument hit till this one
+                    addLoopedInstrument(Instruments.sharedInstance().getDisabledId());
+                    mLastHitTime = 0;
+
+                    //start the loop play thread
+                    mLoopbackPlayerThread = new LoopbackPlayerThread();
+                    mLoopbackPlayerThread.start();
+
+                    sendLoopbackBroadcast(Broadcasts.ACTION_LOOPBACK_PLAY_STARTED);
                 } else {
-                    //stop recording and start playing back the loop
-                    if (mLoopedInstruments.size() > 0) {
-                        Log.d(LOG_TAG, "start loopback thread");
-
-                        //add a disabled instrument to the end to reflect the pause from the last instrument hit till this one
-                        addLoopedInstrument(Instruments.DISABLED);
-                        mLastHitTime = 0;
-
-                        //start the loop play thread
-                        mLoopbackPlayerThread = new LoopbackPlayerThread();
-                        mLoopbackPlayerThread.start();
-
-                        sendLoopbackBroadcast(Broadcasts.ACTION_LOOPBACK_PLAY_STARTED);
-                    } else {
-                        sendLoopbackBroadcast(Broadcasts.ACTION_LOOPBACK_STOPPED);
-                    }
+                    sendLoopbackBroadcast(Broadcasts.ACTION_LOOPBACK_STOPPED);
                 }
-                break;
-        }
+            }
+        } else {
+            if (instrument.sampleId != -1) {
+                mSoundPool.play(mPadToSoundMap.get(instrument.instrumentid), volume, volume, 1, 0, 1f);
+            }
 
-        if (Instruments.LOOPBACK != instrumentid && mIsRecording) {
-            //record it to the list
-            addLoopedInstrument(instrumentid);
+            if (!instrument.isLoopback() && mIsRecording) {
+                //record it to the list
+                addLoopedInstrument(instrumentid);
+            }
         }
     }
 
@@ -187,7 +148,7 @@ public class AudioPlayer {
         if (!doubleHitDisabled) {
             return false;
         }
-        if (instrumentId == Instruments.LOOPBACK) {
+        if (Instruments.sharedInstance().getInstrument(instrumentId).isLoopback()) {
             return false;
         }
         Long lastStarted = lastStartsMap.get(instrumentId);

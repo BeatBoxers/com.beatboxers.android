@@ -35,7 +35,7 @@ public class FragmentShoe extends FragmentDevice {
                 }
 
                 //do not do anything with loopback pads here
-                if (getInstrument(1).instrumentid == Instruments.LOOPBACK) {
+                if (getInstrument(1).isLoopback()) {
                     return;
                 }
 

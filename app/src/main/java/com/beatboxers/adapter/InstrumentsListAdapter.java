@@ -14,7 +14,7 @@ import com.beatboxers.instruments.Instrument;
 import java.util.List;
 
 public class InstrumentsListAdapter extends ArrayAdapter<Instrument> {
-    static protected final String LOG_TAG = "bb_"+InstrumentsListAdapter.class.getSimpleName();
+    static protected final String LOG_TAG = "bb_" + InstrumentsListAdapter.class.getSimpleName();
 
     protected List<Instrument> mInstruments;
 
@@ -38,7 +38,7 @@ public class InstrumentsListAdapter extends ArrayAdapter<Instrument> {
         }
 
         if (null != instrument) {
-            TextView nameView = (TextView)view.findViewById(R.id.instrument);
+            TextView nameView = (TextView) view.findViewById(R.id.instrument);
 
             if (null != nameView) {
                 nameView.setText(instrument.name);

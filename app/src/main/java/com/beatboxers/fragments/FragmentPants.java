@@ -50,7 +50,7 @@ public class FragmentPants extends FragmentDevice {
                     }
 
                     //do not do anything with loopback pads here
-                    if (getInstrument(padNumber).instrumentid == Instruments.LOOPBACK) {
+                    if (getInstrument(padNumber).isLoopback()) {
                         return;
                     }
 

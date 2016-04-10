@@ -36,15 +36,18 @@ import com.beatboxers.fragments.FragmentDevice;
 import com.beatboxers.fragments.FragmentDeviceHeader;
 import com.beatboxers.fragments.FragmentPants;
 import com.beatboxers.fragments.FragmentShoe;
+import com.beatboxers.fragments.SettingsFragment;
+import com.beatboxers.groups.Groups;
 import com.beatboxers.instruments.AudioPlayer;
 import com.beatboxers.instruments.DeviceConfig;
+import com.beatboxers.instruments.Instruments;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
-    static private final String LOG_TAG = "bb_"+MainActivity.class.getSimpleName();
+    static private final String LOG_TAG = "bb_" + MainActivity.class.getSimpleName();
 
     static public final int ACTION_STATE_PLAY = 1;
     static public final int ACTION_STATE_PHONE_CALL = 2;
@@ -67,12 +70,10 @@ public class MainActivity extends Activity {
                 if (state == BluetoothAdapter.STATE_ON) {
                     Log.i(LOG_TAG, "Bluetooth turned on");
                     mLayoutManager.bluetoothEnabled();
-                }
-                else if (state == BluetoothAdapter.STATE_TURNING_OFF) {
+                } else if (state == BluetoothAdapter.STATE_TURNING_OFF) {
                     Log.i(LOG_TAG, "Bluetooth turning off...");
                     mConnectionService.disconnect();
-                }
-                else if (state == BluetoothAdapter.STATE_OFF) {
+                } else if (state == BluetoothAdapter.STATE_OFF) {
                     Log.i(LOG_TAG, "Bluetooth turned off");
                     mLayoutManager.bluetoothDisabled();
                 }
@@ -156,7 +157,7 @@ public class MainActivity extends Activity {
             String name = device.getName().trim();
             String address = device.getAddress().trim();
 
-            Log.d(LOG_TAG, "device connected: "+name+" - "+address);
+            Log.d(LOG_TAG, "device connected: " + name + " - " + address);
 
             mLayoutManager.connected(name, address);
         }
@@ -167,7 +168,7 @@ public class MainActivity extends Activity {
             String name = device.getName().trim();
             String address = device.getAddress().trim();
 
-            Log.d(LOG_TAG, "device connection error: "+name+" - "+address);
+            Log.d(LOG_TAG, "device connection error: " + name + " - " + address);
 
             mLayoutManager.disconnected(name, address);
         }
@@ -178,7 +179,7 @@ public class MainActivity extends Activity {
             String name = device.getName().trim();
             String address = device.getAddress().trim();
 
-            Log.d(LOG_TAG, "device disconnected: "+name+" - "+address);
+            Log.d(LOG_TAG, "device disconnected: " + name + " - " + address);
 
             mLayoutManager.disconnected(name, address);
         }
@@ -226,12 +227,11 @@ public class MainActivity extends Activity {
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if(menuKeyField != null) {
+            if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Ignore
         }
     }
@@ -262,11 +262,13 @@ public class MainActivity extends Activity {
 
         Log.i(LOG_TAG, "onResume");
 
+        Instruments.init(this);
+        Groups.init(this);
+
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!mBluetoothAdapter.isEnabled()) {
             mLayoutManager.bluetoothDisabled();
-        }
-        else {
+        } else {
             mLayoutManager.bluetoothEnabled();
         }
     }
@@ -280,7 +282,9 @@ public class MainActivity extends Activity {
         mAudioPlayer.killLoopbackPlayerThread();
 
         //disconnect all of our connections since we are destroying the activity
-        mConnectionService.disconnect();
+        if (mConnectionService != null) {
+            mConnectionService.disconnect();
+        }
 
         //we don't care about Bluetooth state changes when we are stopped
         unregisterReceiver(mBluetoothBroadcastReceiver);
@@ -348,7 +352,9 @@ public class MainActivity extends Activity {
 
                 switch (tag) {
                     case TAG_SCAN_BUTTON:
-                        mScanDialog.show(getFragmentManager(), ScanDialog.TAG);
+                        if (!mScanDialog.isAdded()) {
+                            mScanDialog.show(getFragmentManager(), ScanDialog.TAG);
+                        }
                         break;
                     default:
                         headerButtonClicked(tag);
@@ -357,11 +363,11 @@ public class MainActivity extends Activity {
         };
 
         public LayoutManager() {
-            mLayoutNoDevices = (LinearLayout)findViewById(R.id.layoutNoDevices);
-            mLayoutBluetoothDisabled = (LinearLayout)findViewById(R.id.layoutBluetoothDisabled);
-            mLayoutFragmentContainer = (LinearLayout)findViewById(R.id.layoutFragmentContainer);
+            mLayoutNoDevices = (LinearLayout) findViewById(R.id.layoutNoDevices);
+            mLayoutBluetoothDisabled = (LinearLayout) findViewById(R.id.layoutBluetoothDisabled);
+            mLayoutFragmentContainer = (LinearLayout) findViewById(R.id.layoutFragmentContainer);
 
-            Button buttonEnableBluetooth = (Button)findViewById(R.id.buttonEnableBluetooth);
+            Button buttonEnableBluetooth = (Button) findViewById(R.id.buttonEnableBluetooth);
             buttonEnableBluetooth.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -435,7 +441,7 @@ public class MainActivity extends Activity {
         }
 
         public void remove(String name, String tag) {
-            Log.i(LOG_TAG, "removing device: "+name+" "+tag);
+            Log.i(LOG_TAG, "removing device: " + name + " " + tag);
 
             FragmentDeviceHeader fragmentDeviceHeader = getDeviceHeaderFragment(tag);
             mmDeviceHeaderFragments.remove(fragmentDeviceHeader);
@@ -460,15 +466,14 @@ public class MainActivity extends Activity {
             for (FragmentDevice fragmentDevice : mmDeviceFragments) {
                 if (fragmentDevice.getTag().equals(tag)) {
                     fragmentTransaction.show(fragmentDevice);
-                }
-                else {
+                } else {
                     fragmentTransaction.hide(fragmentDevice);
                 }
             }
             fragmentTransaction.commit();
 
             mmCurrentSelectedDeviceTag = tag;
-            mmCurrentSelectedHeaderTag = HEADER_FRAGMENT_TAG_PREFIX+tag;
+            mmCurrentSelectedHeaderTag = HEADER_FRAGMENT_TAG_PREFIX + tag;
             setupActiveButtonView();
         }
 
@@ -476,8 +481,7 @@ public class MainActivity extends Activity {
             for (FragmentDeviceHeader deviceHeader : mmDeviceHeaderFragments) {
                 if (deviceHeader.getTag().equals(mmCurrentSelectedHeaderTag)) {
                     deviceHeader.setIsActive(true);
-                }
-                else {
+                } else {
                     deviceHeader.setIsActive(false);
                 }
             }
@@ -508,8 +512,7 @@ public class MainActivity extends Activity {
             //it is a new fragment
             if (name.equals(Rfduino.DEVICE_NAME)) {
                 fragment = new FragmentShoe();
-            }
-            else {
+            } else {
                 fragment = new FragmentPants();
             }
 
@@ -533,7 +536,7 @@ public class MainActivity extends Activity {
             fragmentTransaction.commit();
 
             mmCurrentSelectedDeviceTag = tag;
-            mmCurrentSelectedHeaderTag = HEADER_FRAGMENT_TAG_PREFIX+tag;
+            mmCurrentSelectedHeaderTag = HEADER_FRAGMENT_TAG_PREFIX + tag;
             setupActiveButtonView();
 
             return fragment;
@@ -541,7 +544,7 @@ public class MainActivity extends Activity {
 
         private boolean deviceHeaderFragmentExists(String tag) {
             //we have to modify our fragment tag a bit since its a header
-            tag = HEADER_FRAGMENT_TAG_PREFIX+tag;
+            tag = HEADER_FRAGMENT_TAG_PREFIX + tag;
 
             for (FragmentDeviceHeader fragmentDeviceHeader : mmDeviceHeaderFragments) {
                 if (tag.equals(fragmentDeviceHeader.getTag())) {
@@ -554,7 +557,7 @@ public class MainActivity extends Activity {
 
         private FragmentDeviceHeader getDeviceHeaderFragment(String tag) {
             //we have to modify our fragment tag a bit since its a header
-            tag = HEADER_FRAGMENT_TAG_PREFIX+tag;
+            tag = HEADER_FRAGMENT_TAG_PREFIX + tag;
 
             for (FragmentDeviceHeader fragmentDeviceHeader : mmDeviceHeaderFragments) {
                 if (fragmentDeviceHeader.getTag().equals(tag)) {
