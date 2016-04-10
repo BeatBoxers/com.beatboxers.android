@@ -33,7 +33,7 @@ public class Instruments {
         mInstruments.add(new Instrument(SNARE, R.string.instrument_snare, R.mipmap.snare));
         mInstruments.add(new Instrument(TOM_1, R.string.instrument_tom_1, R.mipmap.tom_1));
         mInstruments.add(new Instrument(TOM_2, R.string.instrument_tom_2, R.mipmap.tom_2));
-        mInstruments.add(new Instrument(FART, R.string.fart, R.mipmap.tom_2));
+        mInstruments.add(new Instrument(FART, R.string.fart, R.mipmap.fart));
     }
 
     static public Instruments sharedInstance() {
