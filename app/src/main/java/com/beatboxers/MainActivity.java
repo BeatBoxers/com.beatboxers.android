@@ -26,15 +26,12 @@ import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.beatboxers.activities.SettingsActivity;
 import com.beatboxers.bluetooth.ConnectionCallback;
 import com.beatboxers.bluetooth.ConnectionService;
 import com.beatboxers.bluetooth.device.Rfduino;
 import com.beatboxers.bluetooth.device.SavedDevices;
-import com.beatboxers.actions.Phone;
 import com.beatboxers.dialogs.AboutUsDialog;
 import com.beatboxers.dialogs.ScanDialog;
-import com.beatboxers.fragments.SettingsFragment;
 import com.beatboxers.fragments.FragmentDevice;
 import com.beatboxers.fragments.FragmentDeviceHeader;
 import com.beatboxers.fragments.FragmentPants;
@@ -60,7 +57,6 @@ public class MainActivity extends Activity {
     private DeviceConfig mDeviceConfig;
     private ScanDialog mScanDialog = new ScanDialog();
     private AboutUsDialog mAboutUsDialog = new AboutUsDialog();
-    private SettingsFragment mSettingsFragment = new SettingsFragment();
 
     private final BroadcastReceiver mBluetoothBroadcastReceiver = new BroadcastReceiver() {
         @Override

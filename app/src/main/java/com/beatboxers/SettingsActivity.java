@@ -1,4 +1,4 @@
-package com.beatboxers.activities;
+package com.beatboxers;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();
+            .replace(android.R.id.content, new SettingsFragment())
+            .commit();
     }
 }
