@@ -72,6 +72,36 @@
         <item name="number">10</item>
         <item name="sample">@raw/jfdi</item>
     </array>
+    <array name="instrument12">
+        <item name="name">@string/hh</item>
+        <item name="icon">@mipmap/hh</item>
+        <item name="number">11</item>
+        <item name="sample">@raw/hh</item>
+    </array>
+    <array name="instrument13">
+        <item name="name">@string/chord1</item>
+        <item name="icon">@mipmap/chord1</item>
+        <item name="number">12</item>
+        <item name="sample">@raw/chord1</item>
+    </array>
+    <array name="instrument14">
+        <item name="name">@string/chord2</item>
+        <item name="icon">@mipmap/chord2</item>
+        <item name="number">13</item>
+        <item name="sample">@raw/chord2</item>
+    </array>
+    <array name="instrument15">
+        <item name="name">@string/clap</item>
+        <item name="icon">@mipmap/clap</item>
+        <item name="number">14</item>
+        <item name="sample">@raw/clap</item>
+    </array>
+    <array name="instrument16">
+        <item name="name">@string/full</item>
+        <item name="icon">@mipmap/full</item>
+        <item name="number">15</item>
+        <item name="sample">@raw/full</item>
+    </array>
     <array name="instrumentsItems">
         <item>@array/instrument0</item>
         <item>@array/instrument1</item>
@@ -85,6 +115,11 @@
         <item>@array/instrument9</item>
         <item>@array/instrument10</item>
         <item>@array/instrument11</item>
+        <item>@array/instrument12</item>
+        <item>@array/instrument13</item>
+        <item>@array/instrument14</item>
+        <item>@array/instrument15</item>
+        <item>@array/instrument16</item>
     </array>
     <array name="group0">
         <item>@string/group0</item>
@@ -100,6 +135,11 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
     </array>
     <array name="group1">
         <item>@string/group1</item>
@@ -118,6 +158,14 @@
         <item>2</item>
         <item>5</item>
     </array>
+    <array name="group4">
+        <item>@string/group4</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </array>
     <array name="instrumentsGroups">
         <item>@array/group0</item>
         <item>@array/group1</item>
@@ -128,10 +176,12 @@
     <string name="group1">Drums</string>
     <string name="group2">Farts</string>
     <string name="group3">Percussion</string>
+    <string name="group4">SexyBack</string>
     <string-array name="groupsNames">
         <item>@string/group0</item>
         <item>@string/group1</item>
         <item>@string/group2</item>
         <item>@string/group3</item>
+        <item>@string/group4</item>
     </string-array>
 </resources>
