@@ -568,6 +568,12 @@ public class MainActivity extends Activity {
         private FragmentDeviceHeader addNewDeviceHeaderFragment(String tag, String title, boolean isScan) {
             Log.i(LOG_TAG, "Adding new device header fragment: " + tag);
 
+            FragmentDeviceHeader existingFragment = (FragmentDeviceHeader)getFragmentManager().findFragmentByTag(tag);
+
+            if (null != existingFragment) {
+                return existingFragment;
+            }
+
             FragmentDeviceHeader fragment = new FragmentDeviceHeader();
             fragment.setButtonOnClickListener(mmHeaderButtonClickListener);
 
